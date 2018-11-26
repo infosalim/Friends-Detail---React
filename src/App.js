@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { friends } from "./friends";
+import CardList from "./CardList";
+import SearchBox from "./SearchBox";
+import "./App.css"
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      friends: friends,
+      searchfields: ''
+    };
+  }
+
+  onSearchChange = e => {
+    this.setState({ searchfields: e.target.value });
+  }
+
   render() {
+    const filteredFriends = this.state.friends.filter(friend => {
+        return friend.name.toLowerCase().includes(this.state.searchfields.toLowerCase());
+    });
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="tc">
+        <h1 className="f1">Friend List</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <CardList friends={filteredFriends} />
       </div>
     );
   }
